@@ -6,8 +6,7 @@ import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SideButton = ({
     icon,
@@ -28,14 +27,14 @@ const SideButton = ({
             display: "flex",
             alignItems: "center",
             p: 1.5,
-            borderTopRightRadius: 20,   // more noticeable curve
-            borderBottomLeftRadius: 20, // asymmetric pill style
-            bgcolor: active ? "#ffffff" : "transparent", // white when active
-            color: active ? "#057c11" : "#ffffff",       // dark green text on active
+            borderTopRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            bgcolor: active ? "#ffffff" : "transparent",
+            color: active ? "#057c11" : "#ffffff",
             cursor: "pointer",
-            transition: "all 0.3s ease", // smooth hover/active transitions
+            transition: "all 0.3s ease",
             "&:hover": {
-                bgcolor: active ? "#a8e063" : "rgba(255,255,255,0.1)", // light green on hover
+                bgcolor: active ? "#a8e063" : "rgba(255,255,255,0.1)",
             },
             overflow: "hidden",
         }}
@@ -44,7 +43,12 @@ const SideButton = ({
         <Box>
             {open && (
                 <span
-                    style={{ marginLeft: 8, fontSize: 14, whiteSpace: "nowrap", transition: "width 0.3s ease", }}
+                    style={{
+                        marginLeft: 8,
+                        fontSize: 14,
+                        whiteSpace: "nowrap",
+                        transition: "width 0.3s ease",
+                    }}
                 >
                     {name}
                 </span>
@@ -53,15 +57,27 @@ const SideButton = ({
     </Box>
 );
 
-export const Sidebar = ({ open, isMobile, handleDrawerToggle }: { open: boolean, isMobile: boolean, handleDrawerToggle: () => void }) => {
+export const Sidebar = ({
+    open,
+    isMobile,
+    handleDrawerToggle,
+}: {
+    open: boolean;
+    isMobile: boolean;
+    handleDrawerToggle: () => void;
+}) => {
     const navigate = useNavigate();
-    const [activeButton, setActiveButton] = useState<string | null>(null);
+    const location = useLocation(); // get current route
 
-    const handleButtonClick = (buttonName: string, path?: string) => {
-        setActiveButton(buttonName);
-        if (path) {
-            navigate(path);
-        }
+    // helper to check active state
+    const isActive = (path: string) => {
+        if (path === "/") return location.pathname === "/";
+        if (path.startsWith("/users")) return location.pathname.startsWith("/users");
+        if (path.startsWith("/user-view")) return location.pathname.startsWith("/user-view");
+        if (path.startsWith("/security")) return location.pathname.startsWith("/security");
+        if (path.startsWith("/location")) return location.pathname.startsWith("/location");
+        if (path.startsWith("/analytics")) return location.pathname.startsWith("/analytics");
+        return location.pathname === path;
     };
 
     return (
@@ -72,7 +88,7 @@ export const Sidebar = ({ open, isMobile, handleDrawerToggle }: { open: boolean,
                 background: "linear-gradient(180deg, #28a745 0%, #a8e063 100%)",
                 display: "flex",
                 flexDirection: "column",
-                position: 'fixed',
+                position: "fixed",
                 py: 2,
                 transition: "width 0.3s ease",
                 borderRadius: 2,
@@ -81,15 +97,57 @@ export const Sidebar = ({ open, isMobile, handleDrawerToggle }: { open: boolean,
         >
             <Box sx={{ mt: 1 }} />
             {!isMobile && (
-                <SideButton onClick={handleDrawerToggle} icon={<MenuIcon />} open={open} />
+                <SideButton
+                    onClick={handleDrawerToggle}
+                    icon={<MenuIcon />}
+                    open={open}
+                />
             )}
-            <SideButton name="Dashboard" icon={<SpaceDashboard />} open={open} onClick={() => handleButtonClick('Dashboard', '/')} active={activeButton === 'Dashboard'} />
-            <SideButton name="Users" icon={<GroupRoundedIcon />} open={open} onClick={() => handleButtonClick('Users', '/users')} active={activeButton === 'Users'} />
-            <SideButton name="Security" icon={<SecurityRoundedIcon />} open={open} onClick={() => handleButtonClick('Security')} active={activeButton === 'Security'} />
-            <SideButton name="Location" icon={<RoomRoundedIcon />} open={open} onClick={() => handleButtonClick('Location')} active={activeButton === 'Location'} />
-            <SideButton name="Analytics" icon={<BarChartRoundedIcon />} open={open} onClick={() => handleButtonClick('Analytics')} active={activeButton === 'Analytics'} />
+
+            <SideButton
+                name="Dashboard"
+                icon={<SpaceDashboard />}
+                open={open}
+                onClick={() => navigate("/")}
+                active={isActive("/")}
+            />
+            <SideButton
+                name="Users"
+                icon={<GroupRoundedIcon />}
+                open={open}
+                onClick={() => navigate("/users")}
+                active={isActive("/users") || isActive("/user-view")}
+            />
+            <SideButton
+                name="Security"
+                icon={<SecurityRoundedIcon />}
+                open={open}
+                onClick={() => navigate("/security")}
+                active={isActive("/security")}
+            />
+            <SideButton
+                name="Location"
+                icon={<RoomRoundedIcon />}
+                open={open}
+                onClick={() => navigate("/location")}
+                active={isActive("/location")}
+            />
+            <SideButton
+                name="Analytics"
+                icon={<BarChartRoundedIcon />}
+                open={open}
+                onClick={() => navigate("/analytics")}
+                active={isActive("/analytics")}
+            />
+
             <Box sx={{ flexGrow: 1 }} />
-            <SideButton name="Logout" icon={<ExitToAppRoundedIcon />} open={open} />
+
+            <SideButton
+                name="Logout"
+                icon={<ExitToAppRoundedIcon />}
+                open={open}
+                onClick={() => console.log("logout")}
+            />
         </Box>
     );
 };
