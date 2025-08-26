@@ -5,6 +5,9 @@ import AdminLayout from "./module/components/layout/adminLayout";
 import Loader from "./module/components/loader";
 const DashboardUserChart = lazy(() => import("./module/screens/dashboard/Dashboard"));
 const HomeScreen = lazy(() => import("./module/screens/home/HomeScreen"));
+const UserView = lazy(
+  () => import("./module/screens/home/UserView")
+);
 
 const router = createBrowserRouter(
   [
@@ -13,7 +16,7 @@ const router = createBrowserRouter(
       children: [
         { path: "/", element: <DashboardUserChart /> },
         { path: "/users", element: <HomeScreen /> },
-        { path: "/user-view/:id", element: <HomeScreen /> },
+        { path: "/user-view/:id", element: <UserView /> },
         { path: "/security", element: <HomeScreen /> },
         { path: "/location", element: <HomeScreen /> },
         { path: "/analytics", element: <HomeScreen /> },
