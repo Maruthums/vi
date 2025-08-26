@@ -3,15 +3,20 @@ import React, { lazy } from "react";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./module/components/layout/adminLayout";
 import Loader from "./module/components/loader";
-const DashboardBaseScreen = lazy(
-  () => import("./module/screens/dashboard/baseScreen")
+const DashboardUserChart = lazy(() => import("./module/screens/dashboard/Dashboard"));
+const HomeScreen = lazy(() => import("./module/screens/home/HomeScreen"));
+const UserView = lazy(
+  () => import("./module/screens/home/UserView")
 );
+
 const router = createBrowserRouter(
   [
     {
       element: <AdminLayout />,
       children: [
-        { path: "/", element: <DashboardBaseScreen /> },
+        { path: "/", element: <DashboardUserChart /> },
+        { path: "/home", element: <HomeScreen /> },
+        { path: "/user-view/:id", element: <UserView /> },
       ],
     },
   ],

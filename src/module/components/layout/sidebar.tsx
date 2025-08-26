@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import DevicesOtherRoundedIcon from "@mui/icons-material/DevicesOtherRounded";
+import SpaceDashboard from "@mui/icons-material/SpaceDashboard";
 import SecurityRoundedIcon from "@mui/icons-material/SecurityRounded";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
@@ -8,6 +8,7 @@ import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SideButton = ({
     icon,
@@ -54,7 +55,15 @@ const SideButton = ({
 );
 
 export const Sidebar = ({ open, isMobile, handleDrawerToggle }: { open: boolean, isMobile: boolean, handleDrawerToggle: () => void }) => {
+    const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState<string | null>(null);
+
+    const handleButtonClick = (buttonName: string, path?: string) => {
+        setActiveButton(buttonName);
+        if (path) {
+            navigate(path);
+        }
+    };
 
     return (
         <Box
@@ -68,18 +77,18 @@ export const Sidebar = ({ open, isMobile, handleDrawerToggle }: { open: boolean,
                 py: 2,
                 transition: "width 0.3s ease",
                 borderRadius: 2,
+                ml: isMobile ? 2 : 0,
             }}
         >
             <Box sx={{ mt: 1 }} />
             {!isMobile && (
                 <SideButton onClick={handleDrawerToggle} icon={<MenuIcon />} open={open} />
             )}
-            <SideButton name="Dashboard" icon={<HomeRoundedIcon />} open={open} onClick={() => setActiveButton('Dashboard')} active={activeButton === 'Dashboard'} />
-            <SideButton name="Devices" icon={<DevicesOtherRoundedIcon />} open={open} onClick={() => setActiveButton('Devices')} active={activeButton === 'Devices'} />
-            <SideButton name="Security" icon={<SecurityRoundedIcon />} open={open} onClick={() => setActiveButton('Security')} active={activeButton === 'Security'} />
-            <SideButton name="Location" icon={<RoomRoundedIcon />} open={open} onClick={() => setActiveButton('Location')} active={activeButton === 'Location'} />
-            <SideButton name="Users" icon={<GroupRoundedIcon />} open={open} onClick={() => setActiveButton('Users')} active={activeButton === 'Users'} />
-            <SideButton name="Analytics" icon={<BarChartRoundedIcon />} open={open} onClick={() => setActiveButton('Analytics')} active={activeButton === 'Analytics'} />
+            <SideButton name="Dashboard" icon={<SpaceDashboard />} open={open} onClick={() => handleButtonClick('Dashboard', '/')} active={activeButton === 'Dashboard'} />
+            <SideButton name="Users" icon={<GroupRoundedIcon />} open={open} onClick={() => handleButtonClick('Users', '/users')} active={activeButton === 'Users'} />
+            <SideButton name="Security" icon={<SecurityRoundedIcon />} open={open} onClick={() => handleButtonClick('Security')} active={activeButton === 'Security'} />
+            <SideButton name="Location" icon={<RoomRoundedIcon />} open={open} onClick={() => handleButtonClick('Location')} active={activeButton === 'Location'} />
+            <SideButton name="Analytics" icon={<BarChartRoundedIcon />} open={open} onClick={() => handleButtonClick('Analytics')} active={activeButton === 'Analytics'} />
             <Box sx={{ flexGrow: 1 }} />
             <SideButton name="Logout" icon={<ExitToAppRoundedIcon />} open={open} />
         </Box>

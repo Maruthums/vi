@@ -14,13 +14,6 @@ import { Colors } from "../../utils/color";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export default function AdminLayout() {
-  const [open, setOpen] = React.useState(true);
-
-
-  const handleDrawerToggle = () => {
-    setOpen((prev) => !prev);
-  };
-
   const theme = createTheme({
     palette: {
       primary: { main: "#7C3AED" },
@@ -43,8 +36,12 @@ export default function AdminLayout() {
       },
     },
   });
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const handleDrawerToggle = () => {
+    setOpen((prev) => !prev);
+  };
+  const [open, setOpen] = React.useState(isMobile ? false : true);
 
   return (
     <ThemeProvider theme={theme}>
@@ -87,7 +84,7 @@ export default function AdminLayout() {
         >
           <img src={logo} alt="Logo" style={{ width: "160px" }} />
           {isMobile && <IconButton onClick={handleDrawerToggle} sx={{ mr: 2 }}><MenuIcon /></IconButton>}
-         
+
         </Box>
         <Box sx={{ width: "100%" }}>
           <Outlet context={"true"} />
