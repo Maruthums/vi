@@ -3,7 +3,6 @@ import {
   Box,
   createTheme,
   Drawer,
-  Icon,
   IconButton,
   ThemeProvider,
   useMediaQuery,
