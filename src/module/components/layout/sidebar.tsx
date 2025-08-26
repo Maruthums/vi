@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SpaceDashboard from "@mui/icons-material/SpaceDashboard";
 import SecurityRoundedIcon from "@mui/icons-material/SecurityRounded";
 import RoomRoundedIcon from "@mui/icons-material/RoomRounded";
