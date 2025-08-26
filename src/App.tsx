@@ -15,7 +15,7 @@ const router = createBrowserRouter(
       element: <AdminLayout />,
       children: [
         { path: "/", element: <DashboardUserChart /> },
-        { path: "/home", element: <HomeScreen /> },
+        { path: "/users", element: <HomeScreen /> },
         { path: "/user-view/:id", element: <UserView /> },
       ],
     },
